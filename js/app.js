@@ -10,13 +10,16 @@ let
   middleIndex,
   rightIdex;
 
+let counts = 0;
+let maxAttempts = 25;
+
 function BusCatalog(productName, imagePath) {
   this.productName = productName;
-  this.imagePath =imagePath;
-  this.numberOfDisplays = 0;
+  this.imagePath = imagePath;
+  this.votes = 0;
+  this.numberOfDisplaying = 0;
   BusCatalog.arrayOfObjects.push(this);
 }
-
 BusCatalog.arrayOfObjects = []; //creating array of objects to store the objects(images)
 
 for (let i=0; i<images.length; i++){
@@ -24,6 +27,8 @@ for (let i=0; i<images.length; i++){
 }
 
 console.log(BusCatalog.arrayOfObjects);
+
+// console.log(BusCatalog.arrayOfObjects);
 
 
 let leftImageElement = document.getElementById('left-image');
@@ -44,6 +49,32 @@ function renderIamges() {
 }
 
 renderIamges();
+
+
+
+document.addEventListener('click',handleClicking);
+
+function handleClicking(event){
+  counts++;
+  if (maxAttempts>=counts) {
+    if(event.target === 'left-image'){
+      BusCatalog.arrayOfObjects[leftIndex].votes++;
+    } else if(event.target === 'middle-image'){
+      BusCatalog.arrayOfObjects[middleIndex].votes++;
+    } else if(event.target === 'right-image'){
+      BusCatalog.arrayOfObjects[rightIdex].votes++;
+    }
+    console.log(BusCatalog.arrayOfObjects[leftIndex].numberOfDisplaying);
+    renderIamges();
+  }
+  else if (maxAttempts === counts){
+    leftImageElement.removeEventListener('click', handleClicking);
+    middleImageElement.removeEventListener('click',handleClicking);
+    rightImageElement.removeEventListener('click',handleClicking);
+  }
+ 
+}
+
 
 
 
