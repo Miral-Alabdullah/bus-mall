@@ -22,14 +22,15 @@ function BusCatalog(productName, imagePath) {
 }
 BusCatalog.arrayOfObjects = []; //creating array of objects to store the objects(images)
 
-for (let i=0; i<images.length; i++){
-  new BusCatalog (images[i].split('.')[0], `img/${images[i]}`); // using the for loop to create instances of the constructor function
+
+for (let i = 0; i < images.length; i++) {
+  new BusCatalog(images[i].split('.')[0], `img/${images[i]}`); // using the for loop to create instances of the constructor function
 }
 
 console.log(BusCatalog.arrayOfObjects);
 
-// console.log(BusCatalog.arrayOfObjects);
 
+let imagesSection = document.getElementById('images');
 
 let leftImageElement = document.getElementById('left-image');
 let middleImageElement = document.getElementById('middle-image');
@@ -39,7 +40,7 @@ function renderIamges() {
   leftIndex = generateRandomImages();
   middleIndex = generateRandomImages();
   rightIdex = generateRandomImages();
-  while(leftIndex === middleIndex || leftIndex === rightIdex || middleIndex === rightIdex){
+  while (leftIndex === middleIndex || leftIndex === rightIdex || middleIndex === rightIdex) {
     middleIndex = generateRandomImages();
     rightIdex = generateRandomImages();
   }
@@ -54,33 +55,27 @@ function renderIamges() {
 renderIamges();
 
 
+let btn = document.getElementById('btn');
+imagesSection.addEventListener('click', handleClicking);
 
-leftImageElement.addEventListener('click',handleClicking);
-middleImageElement.addEventListener('click',handleClicking);
-rightImageElement.addEventListener('click',handleClicking);
 
-function handleClicking(event){
+function handleClicking(event) {
   counts++;
-  if (maxAttempts>=counts) {
-    if(event.target.id === 'left-image'){
+  if (maxAttempts >= counts) {
+    if (event.target.id === 'left-image') {
       BusCatalog.arrayOfObjects[leftIndex].votes++;
-    } else if(event.target.id === 'middle-image'){
+    } else if (event.target.id === 'middle-image') {
       BusCatalog.arrayOfObjects[middleIndex].votes++;
-      // console.log(BusCatalog.arrayOfObjects[middleIndex].votes);
-    } else if(event.target.id === 'right-image'){
+    } else if (event.target.id === 'right-image') {
       BusCatalog.arrayOfObjects[rightIdex].votes++;
-      // console.log(BusCatalog.arrayOfObjects[rightIdex].votes);
     }
-    // console.log(BusCatalog.arrayOfObjects);
     renderIamges();
   }
-  else if (maxAttempts === counts){
-    leftImageElement.removeEventListener('click', handleClicking);
-    middleImageElement.removeEventListener('click',handleClicking);
-    rightImageElement.removeEventListener('click',handleClicking);
+  else {
+    imagesSection.removeEventListener('click', handleClicking);
+    btn.addEventListener('click', onClick);
   }
 }
-
 
 
 function generateRandomImages() {
@@ -88,20 +83,17 @@ function generateRandomImages() {
 }
 
 
-function renderList(){
+function renderList() {
 
   let unorderdList = document.getElementById('unorderdList');
   let liElement;
-  for (let i=0; i<=images.length; i++){
+  for (let i = 0; i < images.length; i++) {
     liElement = document.createElement('li');
     unorderdList.appendChild(liElement);
-    liElement.textContent = `${images[i].split('.')[0]} has ${BusCatalog.arrayOfObjects[i].votes} 
-                           votes, and was seen ${BusCatalog.arrayOfObjects[i].numberOfDisplaying} times.`;
+    liElement.textContent = `${BusCatalog.arrayOfObjects[i].productName} has ${BusCatalog.arrayOfObjects[i].votes} votes, and was seen ${BusCatalog.arrayOfObjects[i].numberOfDisplaying} times.`;
   }
 }
 
-let btn = document.getElementById('btn');
-btn.addEventListener('click',onClick);
 
 function onClick() {
   renderList();
