@@ -105,6 +105,7 @@ btn.addEventListener('click',onClick);
 
 function onClick() {
   renderList();
+  btn.removeEventListener('click',renderList);
 }
 
 
