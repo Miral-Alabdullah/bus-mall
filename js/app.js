@@ -12,6 +12,9 @@ let
 
 let counts = 0;
 let maxAttempts = 25;
+let namesOfProducts = [];
+let dataOfVotes = [];
+let dataOfDisplayingImages = [];
 
 function BusCatalog(productName, imagePath) {
   this.productName = productName;
@@ -19,6 +22,7 @@ function BusCatalog(productName, imagePath) {
   this.votes = 0;
   this.numberOfDisplaying = 0;
   BusCatalog.arrayOfObjects.push(this);
+  namesOfProducts.push(this.productName);
 }
 BusCatalog.arrayOfObjects = []; //creating array of objects to store the objects(images)
 
@@ -27,7 +31,7 @@ for (let i = 0; i < images.length; i++) {
   new BusCatalog(images[i].split('.')[0], `img/${images[i]}`); // using the for loop to create instances of the constructor function
 }
 
-console.log(BusCatalog.arrayOfObjects);
+// console.log(BusCatalog.arrayOfObjects);
 
 
 let imagesSection = document.getElementById('images');
@@ -36,14 +40,18 @@ let leftImageElement = document.getElementById('left-image');
 let middleImageElement = document.getElementById('middle-image');
 let rightImageElement = document.getElementById('right-image');
 
+let uniqueArray = [];
 function renderIamges() {
   leftIndex = generateRandomImages();
   middleIndex = generateRandomImages();
   rightIdex = generateRandomImages();
-  while (leftIndex === middleIndex || leftIndex === rightIdex || middleIndex === rightIdex) {
+  while (leftIndex === middleIndex || leftIndex === rightIdex || middleIndex === rightIdex ||
+         uniqueArray.includes(leftIndex) || uniqueArray.includes(middleIndex) || uniqueArray.includes(rightIdex)) {
+    leftIndex = generateRandomImages();
     middleIndex = generateRandomImages();
     rightIdex = generateRandomImages();
   }
+  uniqueArray = [leftIndex,middleIndex,rightIdex];
   leftImageElement.src = BusCatalog.arrayOfObjects[leftIndex].imagePath;
   middleImageElement.src = BusCatalog.arrayOfObjects[middleIndex].imagePath;
   rightImageElement.src = BusCatalog.arrayOfObjects[rightIdex].imagePath;
@@ -53,7 +61,6 @@ function renderIamges() {
 }
 
 renderIamges();
-
 
 let btn = document.getElementById('btn');
 imagesSection.addEventListener('click', handleClicking);
@@ -88,10 +95,13 @@ function renderList() {
   let unorderdList = document.getElementById('unorderdList');
   let liElement;
   for (let i = 0; i < images.length; i++) {
+    dataOfVotes.push(BusCatalog.arrayOfObjects[i].votes);
+    dataOfDisplayingImages.push(BusCatalog.arrayOfObjects[i].numberOfDisplaying);
     liElement = document.createElement('li');
     unorderdList.appendChild(liElement);
     liElement.textContent = `${BusCatalog.arrayOfObjects[i].productName} has ${BusCatalog.arrayOfObjects[i].votes} votes, and was seen ${BusCatalog.arrayOfObjects[i].numberOfDisplaying} times.`;
   }
+  chart();
 }
 
 
@@ -102,3 +112,27 @@ function onClick() {
 
 
 
+function chart(){
+  let ctx = document.getElementById('myChart');
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: namesOfProducts,
+      datasets: [{
+        label: 'Number Of votes',
+        data: dataOfVotes,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderWidth: 1
+      },{
+        label:'Number of showing the image',
+        data: dataOfDisplayingImages,
+        backgroundColor:[
+          'rgb(192,192,192)'
+        ],
+        borderWidth: 1
+      }]
+    }
+  });
+}
