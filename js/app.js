@@ -46,25 +46,32 @@ function renderIamges() {
   leftImageElement.src = BusCatalog.arrayOfObjects[leftIndex].imagePath;
   middleImageElement.src = BusCatalog.arrayOfObjects[middleIndex].imagePath;
   rightImageElement.src = BusCatalog.arrayOfObjects[rightIdex].imagePath;
+  BusCatalog.arrayOfObjects[leftIndex].numberOfDisplaying++;
+  BusCatalog.arrayOfObjects[middleIndex].numberOfDisplaying++;
+  BusCatalog.arrayOfObjects[rightIdex].numberOfDisplaying++;
 }
 
 renderIamges();
 
 
 
-document.addEventListener('click',handleClicking);
+leftImageElement.addEventListener('click',handleClicking);
+middleImageElement.addEventListener('click',handleClicking);
+rightImageElement.addEventListener('click',handleClicking);
 
 function handleClicking(event){
   counts++;
   if (maxAttempts>=counts) {
-    if(event.target === 'left-image'){
+    if(event.target.id === 'left-image'){
       BusCatalog.arrayOfObjects[leftIndex].votes++;
-    } else if(event.target === 'middle-image'){
+    } else if(event.target.id === 'middle-image'){
       BusCatalog.arrayOfObjects[middleIndex].votes++;
-    } else if(event.target === 'right-image'){
+      // console.log(BusCatalog.arrayOfObjects[middleIndex].votes);
+    } else if(event.target.id === 'right-image'){
       BusCatalog.arrayOfObjects[rightIdex].votes++;
+      // console.log(BusCatalog.arrayOfObjects[rightIdex].votes);
     }
-    console.log(BusCatalog.arrayOfObjects[leftIndex].numberOfDisplaying);
+    // console.log(BusCatalog.arrayOfObjects);
     renderIamges();
   }
   else if (maxAttempts === counts){
@@ -72,14 +79,33 @@ function handleClicking(event){
     middleImageElement.removeEventListener('click',handleClicking);
     rightImageElement.removeEventListener('click',handleClicking);
   }
- 
 }
-
 
 
 
 function generateRandomImages() {
   return Math.floor(Math.random() * BusCatalog.arrayOfObjects.length);
 }
+
+
+function renderList(){
+
+  let unorderdList = document.getElementById('unorderdList');
+  let liElement;
+  for (let i=0; i<=images.length; i++){
+    liElement = document.createElement('li');
+    unorderdList.appendChild(liElement);
+    liElement.textContent = `${images[i].split('.')[0]} has ${BusCatalog.arrayOfObjects[i].votes} 
+                           votes, and was seen ${BusCatalog.arrayOfObjects[i].numberOfDisplaying} times.`;
+  }
+}
+
+let btn = document.getElementById('btn');
+btn.addEventListener('click',onClick);
+
+function onClick() {
+  renderList();
+}
+
 
 
