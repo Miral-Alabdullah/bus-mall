@@ -52,7 +52,9 @@ renderIamges();
 
 
 
-document.addEventListener('click',handleClicking);
+leftImageElement.addEventListener('click',handleClicking);
+middleImageElement.addEventListener('click',handleClicking);
+rightImageElement.addEventListener('click',handleClicking);
 
 function handleClicking(event){
   counts++;
@@ -64,7 +66,6 @@ function handleClicking(event){
     } else if(event.target === 'right-image'){
       BusCatalog.arrayOfObjects[rightIdex].votes++;
     }
-    console.log(BusCatalog.arrayOfObjects[leftIndex].numberOfDisplaying);
     renderIamges();
   }
   else if (maxAttempts === counts){
@@ -72,10 +73,9 @@ function handleClicking(event){
     middleImageElement.removeEventListener('click',handleClicking);
     rightImageElement.removeEventListener('click',handleClicking);
   }
- 
 }
 
-
+console.log(BusCatalog.arrayOfObjects[leftIndex].votes);
 
 
 function generateRandomImages() {
