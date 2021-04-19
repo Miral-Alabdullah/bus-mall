@@ -23,7 +23,7 @@ function BusCatalog(productName, imagePath) {
 BusCatalog.arrayOfObjects = []; //creating array of objects to store the objects(images)
 
 for (let i=0; i<images.length; i++){
-  new BusCatalog (images[i].split('.')[0], `../img/${images[i]}`); // using the for loop to create instances of the constructor function
+  new BusCatalog (images[i].split('.')[0], `img/${images[i]}`); // using the for loop to create instances of the constructor function
 }
 
 console.log(BusCatalog.arrayOfObjects);
