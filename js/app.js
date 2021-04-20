@@ -15,6 +15,8 @@ let maxAttempts = 25;
 let namesOfProducts = [];
 let dataOfVotes = [];
 let dataOfDisplayingImages = [];
+let castArray = [];
+let castData;
 
 function BusCatalog(productName, imagePath) {
   this.productName = productName;
@@ -81,6 +83,7 @@ function handleClicking(event) {
   else {
     imagesSection.removeEventListener('click', handleClicking);
     btn.addEventListener('click', onClick);
+    saveTols();
   }
 }
 
@@ -110,6 +113,18 @@ function onClick() {
   btn.removeEventListener('click',onClick);
 }
 
+function saveTols(){
+  castArray = JSON.stringify(BusCatalog.arrayOfObjects);
+  localStorage.setItem('check', castArray);
+}
+
+
+function getFromls() {
+  let data = localStorage.getItem('check');
+  castData = JSON.parse(data);
+  BusCatalog.arrayOfObjects = castData;
+}
+getFromls();
 
 
 function chart(){
